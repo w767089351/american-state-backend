@@ -1,0 +1,21 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type State {
+  id: ID!
+  name: String!
+  colour: String!
+  points: [Point!]!
+}
+
+type Point {
+  lat: String!
+  lng: String!
+}
+
+type Query {
+
+  queryValidStates(keyword: String): [String!]
+  getStateInfo(keyword: String!): State
+}
