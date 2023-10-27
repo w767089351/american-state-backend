@@ -63,7 +63,7 @@ func importStateData() {
 	}
     fmt.Println(items)
     // connect with mongoDB database
-	clientOptions := options.Client().ApplyURI("mongodb://127.0.0.1:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27018")
     client, err := mongo.Connect(context.TODO(), clientOptions)
     if err != nil {
         fmt.Println("Error connecting to MongoDB:", err)
@@ -81,21 +81,17 @@ func importStateData() {
 		}
 	}
 
-	fmt.Println("Initilize Database Successfully")
+	fmt.Println("Initialize Database Successfully")
 }
 
 
 
 var CNX = Connection()
 func Connection() *mongo.Client {
-    // Set client options
-    // Here I have tried to connect Go backend server with dockerized MongoDB container. I pulled mongodb image and create several 
-    // mongoDB containers. I tried to use container IP address/container name/container key to make connections
-    // (like "mongodb://6b81121b8818add50c92f964f0c748e402fbd0fc6f2ec69a58763e399d897031:27017", "mongodb://container-name:27017" and so on)
-    // but all failed. I think I have not found the correct way to connect to dockerized MongoDB container. Now I am trying to search for
-    // the possible method.
-    clientOptions := options.Client().ApplyURI("mongodb://127.0.0.1:27017")
-    // clientOptions := options.Client().ApplyURI("mongodb://6b81121b8818add50c92f964f0c748e402fbd0fc6f2ec69a58763e399d897031:27017")
+    // Here I use port 27018 as the port of dockerized mongodb. In the past version, I always set dockerized mongodb on port 27017.
+    // This resulted in a port conflict, with 27017 automatically connecting to the local MongoDB. 
+    // This caused my previous connections to MongoDB running in Docker to fail. Changing it to 27018 resolved the issue.
+    clientOptions := options.Client().ApplyURI("mongodb://localhost:27018")
 
     // Connect to MongoDB
     client, err := mongo.Connect(context.TODO(), clientOptions)
@@ -134,7 +130,7 @@ func main() {
 
     if err == mongo.ErrNoDocuments {
         importStateData()
-        fmt.Println("Database is empty; initilizing database")
+        fmt.Println("Database is empty; initializing database")
     } else if err != nil {
         log.Fatal(err)
     } else {

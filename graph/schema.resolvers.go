@@ -18,7 +18,7 @@ import (
 var CNX = Connection()
 func Connection() *mongo.Client {
     // Set client options
-    clientOptions := options.Client().ApplyURI("mongodb://127.0.0.1:27017")
+    clientOptions := options.Client().ApplyURI("mongodb://localhost:27018")
 
     // Connect to MongoDB
     client, err := mongo.Connect(context.TODO(), clientOptions)
